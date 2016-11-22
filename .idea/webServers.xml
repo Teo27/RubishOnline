@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="32b57404-c8f3-4835-98c9-11babeb7d351" name="XAMPP" url="http://localhost/RubishOnline">
+        <fileTransfer port="0" mountedRoot="C:\Users\dell\PhpstormProjects\RubishOnline" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>
