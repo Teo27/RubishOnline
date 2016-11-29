@@ -3,5 +3,8 @@
     "psr-4": {
       "RubishOnline\\" : "app/RubishOnline"
     }
+  },
+  "require": {
+    "doctrine/orm": "*"
   }
 }

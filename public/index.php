@@ -14,8 +14,8 @@ require_once '../app/start.php';
 
 //REF public files are from Bootswatch
 
-//$test = new AdminTest();
-//$test->checkPassFail('user','pass');
+$test = new AdminTest();
+$test->checkPassFail('user','pass');
 
 //$test = new BinTest();
 //$test->createBin('name','address',15,-50);

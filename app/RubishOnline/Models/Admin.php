@@ -23,6 +23,7 @@ class Admin
      */
     public function __construct($username, $password)
     {
+        //todo why is this needed??
         $options = [
             'cost' => 12,
         ];
