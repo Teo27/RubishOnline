@@ -9,7 +9,9 @@
 namespace RubishOnline\Models;
 
 
-class Bin
+use RubishOnline\Core\Model;
+
+class Bin extends Model
 {
     var $name;
     var $address;
@@ -18,12 +20,19 @@ class Bin
 
     /**
      * Bin constructor.
+     */
+    public function __construct()
+    {
+        echo 'Bin Model';
+    }
+
+    /**
      * @param $name
      * @param $address
      * @param $longitude
      * @param $latitude
      */
-    public function __construct($name, $address, $longitude = NULL, $latitude = NULL)
+    public function create($name, $address, $longitude = NULL, $latitude = NULL)
     {
         $this->name = $name;
         $this->address = $address;

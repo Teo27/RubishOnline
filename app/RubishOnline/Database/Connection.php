@@ -8,8 +8,6 @@
 
 namespace RubishOnline\Database;
 
-require_once __DIR__ . '/../../../vendor/doctrine/';
-
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 class Connection

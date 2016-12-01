@@ -9,7 +9,9 @@
 namespace RubishOnline\Models;
 
 
-class Question
+use RubishOnline\Core\Model;
+
+class Question extends Model
 {
     var $questionID;
     var $question;
@@ -18,11 +20,18 @@ class Question
 
     /**
      * Question constructor.
+     */
+    public function __construct()
+    {
+        echo 'Question Model';
+    }
+
+    /**
      * @param $question
      * @param $left
      * @param $right
      */
-    public function __construct($question, $left, $right)
+    public function create($question, $left, $right)
     {
         $this->question = $question;
         $this->left = $left;

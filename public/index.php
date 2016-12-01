@@ -6,16 +6,23 @@
  * Time: 15:06
  */
 
-use RubishOnline\Tests\AdminTest;
-use RubishOnline\Tests\BinTest;
-use RubishOnline\Tests\QuestionTest;
+use RubishOnline\Core\Bootstrap;
+
 
 require_once '../app/start.php';
+require_once '../app/RubishOnline/core/Bootstrap.php';
+require_once '../app/RubishOnline/core/Controller.php';
+require_once '../app/RubishOnline/core/View.php';
+require_once '../app/RubishOnline/core/Model.php';
+require_once '../app/RubishOnline/core/Session.php';
+require_once '../app/RubishOnline/config/Paths.php';
 
 //REF public files are from Bootswatch
 
-$test = new AdminTest();
-$test->checkPassFail('user','pass');
+$boot = new Bootstrap;
+
+//$test = new AdminTest();
+//$test->checkPassFail('user','pass');
 
 //$test = new BinTest();
 //$test->createBin('name','address',15,-50);

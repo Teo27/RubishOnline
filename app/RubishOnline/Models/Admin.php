@@ -9,55 +9,67 @@
 namespace RubishOnline\Models;
 
 
-class Admin
+use RubishOnline\Core\Model;
+use RubishOnline\Core\Session;
+
+class Admin extends Model
 {
     //REF http://php.net/manual/en/function.password-hash.php
 
-    var $username;
-    var $password;
+    private $username;
+    private $password;
+    private $options = array('cost' => 12);
 
-    /**
-     * Admin constructor.
-     * @param $username
-     * @param $password
-     */
-    public function __construct($username, $password)
+    public function __construct()
     {
-        //todo why is this needed??
-        $options = [
-            'cost' => 12,
-        ];
-
-        $this->username = $username;
-        $this->password = password_hash($password, PASSWORD_BCRYPT, $options);
+        parent::__construct();
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
+    public function register(){
+
+        $username = $this->cleanUser($_POST['username']);
+        $pass = password_hash($this->cleanPass($_POST['password']), PASSWORD_BCRYPT, $this->options);
+        echo $_POST['username'];
+
+        //TODO Insert variables to DB
+
     }
 
-    //TODO Change to private later
+    public function verify(){
 
-    /**
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
+        $username = $this->cleanUser($_POST['username']);
+        $pass = $this->cleanPass($_POST['password']);
+
+        //TODO select user with these parameters
+
+
+        //TODO get number of rows
+        $count = 0;
+
+        if ($count >0){
+            Session::start();
+            Session::set('loggedIn',true);
+
+            //Redirect to some future page
+            header('location: ../home');
+        }else{
+            //give an error
+        }
     }
 
-    /**
-     * @return boolean
-     */
-    public function checkPassword($pass)
-    {
-        return password_verify($pass,$this->getPassword());
+    private function cleanUser($user){
+
+        //TODO make sure the input is clean before passing
+
+        return $user;
     }
 
+    private function cleanPass($pass){
+
+        //TODO make sure the input is clean before passing
+
+        return $pass;
+    }
 
 
 }
