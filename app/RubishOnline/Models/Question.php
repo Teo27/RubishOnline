@@ -17,6 +17,7 @@ class Question extends Model
     var $question;
     var $left;
     var $right;
+    var $votes;
 
     /**
      * Question constructor.
@@ -24,6 +25,7 @@ class Question extends Model
     public function __construct()
     {
         echo 'Question Model';
+        $this->votes = 0;
     }
 
     /**
@@ -84,6 +86,22 @@ class Question extends Model
     public function setRight($right)
     {
         $this->right = $right;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVotes()
+    {
+        return $this->votes;
+    }
+
+    /**
+     * @param mixed $right
+     */
+    public function addVote($right)
+    {
+        $this->votes++;
     }
 
     /**

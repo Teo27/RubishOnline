@@ -37,39 +37,35 @@ class Admin extends Model
 
     public function verify(){
 
-        $username = $this->cleanUser($_POST['username']);
-        $pass = $this->cleanPass($_POST['password']);
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        if($this->checkForSpec($username) && $this->checkForSpec($password))
+        {
+            //TODO select user with these parameters
 
-        //TODO select user with these parameters
 
+            //TODO get number of rows
+            $count = 0;
 
-        //TODO get number of rows
-        $count = 0;
+            if ($count >0){
+                Session::start();
+                Session::set('loggedIn',true);
 
-        if ($count >0){
-            Session::start();
-            Session::set('loggedIn',true);
-
-            //Redirect to some future page
-            header('location: ../home');
-        }else{
-            //give an error
+                //Redirect to some future page
+                header('location: ../home');
+            }else{
+                //give an error
+            }
+        }
+        else
+        {
+            return "error";
         }
     }
 
-    private function cleanUser($user){
-
-        //TODO make sure the input is clean before passing
-
-        return $user;
+    private function checkForSpec($string){
+        //check if string contains at least one character
+        return preg_match('/^[a-zA-Z0-9]*$/', $string);
     }
-
-    private function cleanPass($pass){
-
-        //TODO make sure the input is clean before passing
-
-        return $pass;
-    }
-
 
 }
