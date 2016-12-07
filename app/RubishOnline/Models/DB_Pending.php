@@ -6,10 +6,10 @@
  * Time: 9:28 PM
  */
 
-namespace RubishOnline\Database;
+namespace RubishOnline\Models;
 
 
-class Pending
+class DB_Pending
 {
 
 }

@@ -6,10 +6,10 @@
  * Time: 9:30 PM
  */
 
-namespace RubishOnline\Database;
+namespace RubishOnline\Models;
 
 
-class Results
+class DB_Results
 {
 
 }

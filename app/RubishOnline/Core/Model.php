@@ -9,13 +9,13 @@
 namespace RubishOnline\Core;
 
 
-use RubishOnline\Database\Connection;
+use RubishOnline\Models\DB_Connection;
 
 class Model
 {
 
     function __construct()
     {
-        //$$this->db = new Connection(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
+        //$$this->db = new DB_Connection(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
     }
 }

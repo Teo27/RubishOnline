@@ -10,14 +10,17 @@ namespace RubishOnline\Models;
 
 
 use RubishOnline\Core\Model;
+use Doctrine\DBAL\DBALException;
 
 class Question extends Model
 {
+    //class for new question
     var $questionID;
     var $question;
     var $left;
     var $right;
     var $votes;
+
 
     /**
      * Question constructor.
@@ -28,6 +31,55 @@ class Question extends Model
         $this->votes = 0;
     }
 
+    public function insertQuestion($question, $left, $right, $user)
+    {
+        $retVal = 0; //no connection
+        //open connection
+        $connInst = new DB_Connection();
+        $conn = $connInst->open();
+        $tablename = 'Pending';
+        if($user == 'admin')
+        {
+            $tablename = 'Approved';
+        }
+
+        //if connection successful then
+        if (!is_null($conn) && $conn->isConnected()) {
+            $conn->beginTransaction();
+            try {
+                //create query
+                $queryBuilder = $conn->createQueryBuilder();
+                $queryBuilder
+                    ->insert($tablename)
+                    ->values(
+                        array(
+                            'Question' => '?',
+                            'A_Left' => '?',
+                            'A_Right' => '?'
+                        )
+                    )
+                    ->setParameter(0, $question)
+                    ->setParameter(1, $left)
+                    ->setParameter(2, $right);
+
+                //execute command
+                print_r($queryBuilder->execute());
+
+                $retVal = 1;
+                $conn->commit();
+            } catch (DBALException $e) {
+                $retVal = -1;
+                $conn->rollBack();
+                echo $e->getMessage(), "\n";
+            }
+
+            //close connection
+            $connInst->close($conn);
+        } else {
+            echo "no connection found";
+        }
+        return $retVal;
+    }
     /**
      * @param $question
      * @param $left
@@ -40,13 +92,6 @@ class Question extends Model
         $this->right = $right;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getQuestion()
-    {
-        return $this->question;
-    }
 
     /**
      * @param mixed $question
@@ -96,10 +141,7 @@ class Question extends Model
         return $this->votes;
     }
 
-    /**
-     * @param mixed $right
-     */
-    public function addVote($right)
+    public function addVote()
     {
         $this->votes++;
     }

@@ -6,15 +6,16 @@
  * Time: 5:22 PM
  */
 
-namespace RubishOnline\Database;
+namespace RubishOnline\Models;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Doctrine\DBAL\ConnectionException;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use \Doctrine\DBAL\Configuration;
 
-class Connection
+class DB_Connection
 {
     function __construct()
     {
@@ -38,17 +39,14 @@ class Connection
             'driver' => 'pdo_mysql',
         );
 
-        //todo add try catch ConnectionException
         try
         {
             $conn = DriverManager::getConnection($connectionParams, $config);
-
             return $conn;
         }
-        catch (ConnectionException $e)
+        catch (DBALException $e)
         {
-            // todo change echo later
-            echo $e->getMessage(), "\n";
+            //echo $e->getMessage(), "\n";
             return null;
         }
     }
