@@ -9,17 +9,17 @@
 use RubishOnline\Core\Bootstrap;
 
 
-require_once '../app/start.php';
-require_once '../app/RubishOnline/core/Bootstrap.php';
+require_once '../app/start.php';/*
+require_once '../app/RubishOnline/Core/Bootstrap.php';
 require_once '../app/RubishOnline/core/Controller.php';
 require_once '../app/RubishOnline/core/View.php';
 require_once '../app/RubishOnline/core/Model.php';
-require_once '../app/RubishOnline/core/Session.php';
-require_once '../app/RubishOnline/config/Paths.php';
+require_once '../app/RubishOnline/core/Session.php';*/
+//require_once '../app/RubishOnline/Config/Paths.php';
 
 //REF public files are from Bootswatch
-
-$boot = new Bootstrap;
+echo "1";
+//$boot = new Bootstrap;
 
 //$test = new AdminTest();
 //$test->checkPassFail('user','pass');

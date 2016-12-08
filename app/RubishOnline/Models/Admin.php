@@ -15,10 +15,6 @@ use Doctrine\DBAL\DBALException;
 
 class Admin extends Model
 {
-    //REF http://php.net/manual/en/function.password-hash.php
-
-    private $username;
-    private $password;
     private $options = array('cost' => 12);
 
     public function __construct()
@@ -32,12 +28,6 @@ class Admin extends Model
             if ($this->checkForSpec($_POST['username']) && $this->checkForSpec($_POST['password'])) {
                 $username = $_POST['username'];
                 $password = password_hash($_POST['password'], PASSWORD_BCRYPT, $this->options);
-
-                $c = password_hash($_POST['password'], PASSWORD_BCRYPT, $this->options);
-                print_r($c);
-                echo "<br>";
-                print_r(password_verify($_POST['password'], $c));
-                echo "<br>";
 
                 $count = $this->insertAdmin($username, $password);
 
@@ -124,10 +114,8 @@ class Admin extends Model
                     ->setParameter(1, $password);
 
                 //execute command
-                //todo test output
-                print_r($queryBuilder->execute()->fetchAll()[]);
+                $retVal = $queryBuilder->execute();
 
-                $retVal = 1;
                 $conn->commit();
             } catch (DBALException $e) {
                 $retVal = -1;
@@ -149,7 +137,7 @@ class Admin extends Model
         //open connection
         $connInst = new DB_Connection();
         $conn = $connInst->open();
-        //&& $conn->isConnected()
+
         //if connection successful then
         if (!is_null($conn)) {
             $conn->beginTransaction();
@@ -167,7 +155,7 @@ class Admin extends Model
                 $rez = $queryBuilder->execute()->fetchAll();
 
                 //compare passwords and give feedback
-                password_verify($_POST["password"], $rez[0]["A_Password"])? $retVal = 1 : $retVal = -1; // select successful
+                password_verify($password, $rez[0]["A_Password"])? $retVal = 1 : $retVal = -1; // select successful
 
                 $conn->commit();
 
