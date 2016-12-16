@@ -16,6 +16,7 @@ class Model
 
     function __construct()
     {
+        //todo
         //$$this->db = new DB_Connection(DB_TYPE, DB_HOST, DB_NAME, DB_USER, DB_PASS);
     }
 }

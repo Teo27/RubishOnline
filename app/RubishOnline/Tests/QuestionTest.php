@@ -10,17 +10,13 @@ use RubishOnline\Models\Question;
  * Date: 22-Nov-16
  * Time: 17:36
  */
-
-class QuestionTest
+class QuestionTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function createQuestion($question, $left, $right){
+    public function testQuestionInsert()
+    {
 
-        $qst = new Question($question, $left, $right);
-
-        echo 'The question is ' . $qst->getQuestion();
-        echo '</br> The left answer is ' . $qst->getLeft();
-        echo '</br> The right answer is ' . $qst->getRight();
+        $qst = new Question();
 
     }
 }

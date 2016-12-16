@@ -28,4 +28,11 @@ class Controller
 
         return new $constr();
     }
+
+    public function checkForSpec($string)
+    {
+        //check if string contains at least one character
+        //echo preg_match('/^[a-zA-Z0-9!,.? ]*$/ ', $string)." ".$string;
+        return preg_match('/^[a-zA-Z0-9!,.? ]*$/ ', $string);
+    }
 }

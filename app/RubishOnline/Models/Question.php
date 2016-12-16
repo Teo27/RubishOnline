@@ -27,110 +27,42 @@ class Question extends Model
      */
     public function __construct()
     {
-        echo 'Question Model';
         $this->votes = 0;
     }
 
-    public function insertQuestion($question, $left, $right, $user)
+    /**
+     * @return mixed
+     */
+    public function getApproved()
     {
-        $retVal = 0; //no connection
-        //open connection
-        $connInst = new DB_Connection();
-        $conn = $connInst->open();
-        $tablename = 'Pending';
-        if($user == 'admin')
-        {
-            $tablename = 'Approved';
-        }
-
-        //if connection successful then
-        if (!is_null($conn) && $conn->isConnected()) {
-            $conn->beginTransaction();
-            try {
-                //create query
-                $queryBuilder = $conn->createQueryBuilder();
-                $queryBuilder
-                    ->insert($tablename)
-                    ->values(
-                        array(
-                            'Question' => '?',
-                            'A_Left' => '?',
-                            'A_Right' => '?'
-                        )
-                    )
-                    ->setParameter(0, $question)
-                    ->setParameter(1, $left)
-                    ->setParameter(2, $right);
-
-                //execute command
-                print_r($queryBuilder->execute());
-
-                $retVal = 1;
-                $conn->commit();
-            } catch (DBALException $e) {
-                $retVal = -1;
-                $conn->rollBack();
-                echo $e->getMessage(), "\n";
-            }
-
-            //close connection
-            $connInst->close($conn);
-        } else {
-            echo "no connection found";
-        }
+        $approved = new DB_Approved();
+        $retVal = $approved->getQuestions();
+        if ($retVal == -2)
+            echo "error in db";
+        elseif ($retVal == 0)
+            echo "no connection";
+        /*
+        else
+            print_r($retVal);*/
         return $retVal;
     }
-    /**
-     * @param $question
-     * @param $left
-     * @param $right
-     */
-    public function create($question, $left, $right)
-    {
-        $this->question = $question;
-        $this->left = $left;
-        $this->right = $right;
-    }
 
-
-    /**
-     * @param mixed $question
-     */
-    public function setQuestion($question)
+    public function insert($question, $left, $right, $user)
     {
-        $this->question = $question;
-    }
+        $count = $this->insertQuestion($question, $left, $right, $user);
 
-    /**
-     * @return mixed
-     */
-    public function getLeft()
-    {
-        return $this->left;
-    }
+        if ($count == 1) {
+            /*
+            Session::start();
+            Session::set('loggedIn', true);
 
-    /**
-     * @param mixed $left
-     */
-    public function setLeft($left)
-    {
-        $this->left = $left;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRight()
-    {
-        return $this->right;
-    }
-
-    /**
-     * @param mixed $right
-     */
-    public function setRight($right)
-    {
-        $this->right = $right;
+            //Redirect to some future page
+            header('location: ../home');
+            */
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -146,13 +78,55 @@ class Question extends Model
         $this->votes++;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getQuestionID()
-    {
-        return $this->questionID;
-    }
 
+    private function insertQuestion($question, $left, $right, $user)
+    {
+        $retVal = 0; //no connection
+        //open connection
+        $connInst = new DB_Connection();
+        $conn = $connInst->open();
+
+        $tableName = 'Pending';
+        if($user == 'admin')
+        {
+            $tableName = 'Approved';
+        }
+
+        //if connection successful then
+        if (!is_null($conn)) {
+            $conn->beginTransaction();
+            try {
+                //create query
+                $queryBuilder = $conn->createQueryBuilder();
+                $queryBuilder
+                    ->insert($tableName)
+                    ->values(
+                        array(
+                            'Question' => '?',
+                            'A_Left' => '?',
+                            'A_Right' => '?'
+                        )
+                    )
+                    ->setParameter(0, $question)
+                    ->setParameter(1, $left)
+                    ->setParameter(2, $right);
+
+                //execute command
+                $retVal = $queryBuilder->execute();
+
+                $conn->commit();
+            } catch (DBALException $e) {
+                $retVal = -1;
+                $conn->rollBack();
+                echo $e->getMessage(), "\n";
+            }
+
+            //close connection
+            $connInst->close($conn);
+        } else {
+            echo "no connection found";
+        }
+        return $retVal;
+    }
 
 }

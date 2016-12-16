@@ -13,80 +13,46 @@ use RubishOnline\Core\Model;
 use RubishOnline\Core\Session;
 use Doctrine\DBAL\DBALException;
 
-class Admin extends Model
+class ModelAdmin extends Model
 {
-    private $options = array('cost' => 12);
-
     public function __construct()
     {
         parent::__construct();
     }
 
-    public function register()
+    public function register($username, $password)
     {
-        if(isset($_POST['username']) && isset($_POST['password'])) {
-            if ($this->checkForSpec($_POST['username']) && $this->checkForSpec($_POST['password'])) {
-                $username = $_POST['username'];
-                $password = password_hash($_POST['password'], PASSWORD_BCRYPT, $this->options);
+        $count = $this->insertAdmin($username, $password);
 
-                $count = $this->insertAdmin($username, $password);
+        if ($count == 1) {
+            /*
+            Session::start();
+            Session::set('loggedIn', true);
 
-                if ($count == 1) {
-                    /*
-                    Session::start();
-                    Session::set('loggedIn', true);
-
-                    //Redirect to some future page
-                    header('location: ../home');*/
-                    echo "registration successful";
-                    return "successful";
-                } else {
-                    echo "error in db";
-                    return "error in db";
-                }
-            } else {
-                echo "error, bad input";
-                return "error, bad input";
-            }
+            //Redirect to some future page
+            header('location: ../home');*/
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public function verify()
+    public function verify($username, $password)
     {
-        if(isset($_POST['username']) && isset($_POST['password']))
-        {
-            if ($this->checkForSpec($_POST['username']) && $this->checkForSpec($_POST['password'])) {
-                $username = $_POST['username'];
-                $password = $_POST['password'];
+        $count = $this->selectAdmin($username, $password);
 
-                $count = $this->selectAdmin($username, $password);
+        if ($count == 1) {
+            /*
+            Session::start();
+            Session::set('loggedIn', true);
 
-                if ($count == 1) {
-                    /*
-                    Session::start();
-                    Session::set('loggedIn', true);
-
-                    //Redirect to some future page
-                    header('location: ../home');
-                    */
-                    echo "login successful";
-                    return "successful";
-                } else {
-                    echo "error in db";
-                    return "error in db";
-                }
-
-            } else {
-                echo "error, bad input";
-                return "error, bad input";
-            }
+            //Redirect to some future page
+            header('location: ../home');
+            */
+            return true;
+        } else {
+            return false;
         }
-    }
-
-    private function checkForSpec($string)
-    {
-        //check if string contains at least one character
-        return preg_match('/^[a-zA-Z0-9]*$/', $string);
     }
 
     private function insertAdmin($username, $password)
@@ -148,21 +114,20 @@ class Admin extends Model
                     ->select('A_Password')
                     ->from('Admin')
                     ->where('A_Name = ?')
-                    ->setParameter(0, $username)
-                ;
+                    ->setParameter(0, $username);
 
                 //execute command and set rezult
                 $rez = $queryBuilder->execute()->fetchAll();
 
                 //compare passwords and give feedback
-                password_verify($password, $rez[0]["A_Password"])? $retVal = 1 : $retVal = -1; // select successful
+                password_verify($password, $rez[0]["A_Password"]) ? $retVal = 1 : $retVal = -1; // select successful
 
                 $conn->commit();
 
             } catch (DBALException $e) {
                 $retVal = -2; //select failed
                 $conn->rollBack();
-                echo $retVal,$e->getMessage(), "\n";
+                echo $retVal, $e->getMessage(), "\n";
             }
             //close connection
             $connInst->close($conn);

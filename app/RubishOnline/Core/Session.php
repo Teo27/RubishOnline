@@ -18,8 +18,8 @@ class Session
 
     public static function get($key){
         if(isset($_SESSION[$key]))
-        return $_SESSION[$key];
-        // else?
+            return $_SESSION[$key];
+        return null;
     }
 
     public static function start(){
