@@ -27,18 +27,18 @@ PRIMARY KEY(Q_id)
 
 CREATE TABLE Bins
 (
-Bin varchar(100) NOT NULL,
+Bin_Id int NOT NULL AUTO_INCREMENT,
 Question varchar(200) NOT NULL,
-`Right` varchar(50) NOT NULL,
-`Left` varchar(50) NOT NULL,
+A_Right varchar(50) NOT NULL,
+A_Left varchar(50) NOT NULL,
 Right_Result int DEFAULT 0,
 Left_Result int DEFAULT 0,
 Published date NOT NULL,
 Address varchar(255) NOT NULL,
-Longitude int,
-Latitude int,
+Longitude float(10,6),
+Latitude float(10,6),
 
-PRIMARY KEY(Bin)
+PRIMARY KEY(Bin_Id)
 
 );
 

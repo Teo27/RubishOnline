@@ -15,11 +15,9 @@ require_once '../app/RubishOnline/core/Controller.php';
 require_once '../app/RubishOnline/core/View.php';
 require_once '../app/RubishOnline/core/Model.php';
 require_once '../app/RubishOnline/core/Session.php';*/
-//require_once '../app/RubishOnline/Config/Paths.php';
 
-//REF public files are from Bootswatch
-echo "1";
-//$boot = new Bootstrap;
+//echo "1";
+$boot = new Bootstrap;
 
 //$test = new AdminTest();
 //$test->checkPassFail('user','pass');

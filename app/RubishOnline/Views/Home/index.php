@@ -46,6 +46,10 @@
 <br>
 <p id="msg" hidden>To the website</p>
 
+<?php
+var_dump($this->see);
+?>
+
 
 <script>
     $(document).ready(function () {

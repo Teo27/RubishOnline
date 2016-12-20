@@ -21,9 +21,10 @@ class View
 
         if($noRequire == true){
 
-            require __DIR__ . '/../Views/' . $name . '.php';
+             require __DIR__ . '/../Views/' . $name . '.php';
 
         }else{
+
 
             require __DIR__ . '/../Views/header.php';
             require __DIR__ . '/../Views/' . $name . '.php';

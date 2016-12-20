@@ -8,12 +8,13 @@
 
 namespace RubishOnline\Core;
 
+require_once __DIR__ . '/../Config/Paths.php';
 
 use RubishOnline\Controllers\Error;
 
 class Bootstrap
 {
-    //REF http://php.net/manual/en/language.constants.predefined.php
+
 
     protected $controller = '';
     protected $method = 'index';
@@ -23,6 +24,7 @@ class Bootstrap
     public function __construct()
     {
         $url = $this->parseUrl();
+
 
         if(empty($url[0])){
             $url[0] = 'Home';

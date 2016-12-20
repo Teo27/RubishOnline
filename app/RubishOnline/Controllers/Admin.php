@@ -10,8 +10,8 @@ namespace RubishOnline\Controllers;
 
 
 use RubishOnline\Core\Controller;
-use RubishOnline\Models\ModelAdmin;
-use RubishOnline\Models\Question;
+use RubishOnline\Core\Session;
+use RubishOnline\Models\DB_Admin;
 
 class Admin extends Controller
 {
@@ -20,83 +20,52 @@ class Admin extends Controller
     public function __construct()
     {
         parent::__construct();
-        //todo throw error
-        //$this->view->render('admin/index');
     }
 
     public function index(){
-        //$model = new AdminModel();
+        $this->view->render('Admin/index');
     }
 
     public function register(){
-        //echo 'user created was ', $admin->getUsername();
-        //$this->view('home/index');
 
         if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-            if ($this->checkForSpec($_POST['username']) && $this->checkForSpec($_POST['password'])) {
+
                 $username = $_POST['username'];
                 $password = password_hash($_POST['password'], PASSWORD_BCRYPT, $this->options);
 
-                $admin = new ModelAdmin();
-                $rez = $admin->register($username, $password);
-                if ($rez == true) {
-                    echo "registration successful";
-                    //refresh page - Admin created
-                } else {
-                    echo "error";
-                    //refresh page - wrong credentials
-                }
-            } else {
-                return "error, bad input";
-            }
+                $admin = new DB_Admin();
+                $this->view->register = $rez = $admin->register($username, $password);
+            echo $rez;
+
+        }else{
+            echo 2;
+            $this->view->register = -2;
         }
-        return false;
+
+        //$this->view->render('Admin/index');
     }
 
-    public function login()
-    {
+    public function login(){
+
         if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-            if ($this->checkForSpec($_POST['username']) && $this->checkForSpec($_POST['password'])) {
-                $username = $_POST['username'];
-                $password = $_POST['password'];
 
-                $admin = $this->model('ModelAdmin');
-                $rez = $admin->verify($username, $password);
-                if ($rez) {
-                    echo "login successful";
-                    //open Admin panel
-                } else {
-                    echo "error";
-                    //refresh page - wrong credentials
-                }
-            } else {
-                return "error, bad input";
-            }
-        }
-        return false;
-    }
+            $username = $_POST['username'];
+            $password = $_POST['password'];
 
-    public function addQuestion()
-    {
-        if (isset($_POST['question']) && isset($_POST['left']) && isset($_POST['right'])) {
-            if ($this->checkForSpec($_POST['question']) && $this->checkForSpec($_POST['left']) && $this->checkForSpec($_POST['right'])) {
-                $question = $_POST['question'];
-                $left = $_POST['left'];
-                $right = $_POST['right'];
-                $qInst = new Question();
-                $rez = $qInst->insert($question, $left, $right, 'admin');
-                if ($rez) {
-                    echo "insert successful";
-                    //refresh page - successful
-                } else {
-                    echo "error";
-                    //refresh page - something is wrong
-                }
-            } else {
-                echo "error, bad input";
-                return "error, bad input";
+            $admin = new DB_Admin();
+            $this->view->login = $rez = $admin->verify($username, $password);
+
+            if ($rez == 1) {
+                Session::start();
+                Session::set('loggedIn', true);
+                header('location: ../home');
+                exit;
             }
+
+        }else{
+            $this->view->login = -2;
         }
-        return false;
+
+        $this->view->render('Admin/index');
     }
 }

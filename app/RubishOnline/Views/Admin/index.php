@@ -1,4 +1,4 @@
-<form method="POST" action="<?php echo URL ?>admin/register">
+<form method="POST" action="<?php echo URL ?>admin/login">
     <input id="Username" type="text" placeholder="Username" name="username">
     <br>
     <input id="Password" type="password" placeholder="Password" name="password">

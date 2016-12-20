@@ -13,7 +13,7 @@ use RubishOnline\Core\Model;
 use RubishOnline\Core\Session;
 use Doctrine\DBAL\DBALException;
 
-class ModelAdmin extends Model
+class DB_Admin extends Model
 {
     public function __construct()
     {
@@ -22,37 +22,25 @@ class ModelAdmin extends Model
 
     public function register($username, $password)
     {
-        $count = $this->insertAdmin($username, $password);
+        if (!$this->checkForSpec($username) && !$this->checkForSpec($password)) {
+            return -2;
 
-        if ($count == 1) {
-            /*
-            Session::start();
-            Session::set('loggedIn', true);
-
-            //Redirect to some future page
-            header('location: ../home');*/
-            return true;
-        } else {
-            return false;
         }
+
+        $value = $this->insertAdmin($username, $password);
+
+        return $this->value($value);
     }
 
     public function verify($username, $password)
     {
-        $count = $this->selectAdmin($username, $password);
-
-        if ($count == 1) {
-            /*
-            Session::start();
-            Session::set('loggedIn', true);
-
-            //Redirect to some future page
-            header('location: ../home');
-            */
-            return true;
-        } else {
-            return false;
+        if (!$this->checkForSpec($username) && !$this->checkForSpec($password)) {
+            return -2;
         }
+
+        $value = $this->selectAdmin($username, $password);
+
+        return $this->value($value);
     }
 
     private function insertAdmin($username, $password)
@@ -79,9 +67,8 @@ class ModelAdmin extends Model
                     ->setParameter(0, $username)
                     ->setParameter(1, $password);
 
-                //execute command
-                $retVal = $queryBuilder->execute();
-
+                $queryBuilder->execute();
+                $retVal = 1;
                 $conn->commit();
             } catch (DBALException $e) {
                 $retVal = -1;
@@ -91,10 +78,12 @@ class ModelAdmin extends Model
 
             //close connection
             $connInst->close($conn);
+
+            return $retVal;
+
         } else {
-            echo "no connection found";
+            return $retVal;
         }
-        return $retVal;
     }
 
     private function selectAdmin($username, $password)
@@ -119,6 +108,10 @@ class ModelAdmin extends Model
                 //execute command and set rezult
                 $rez = $queryBuilder->execute()->fetchAll();
 
+                if(count($rez) < 1){
+                    return -2;
+                }
+
                 //compare passwords and give feedback
                 password_verify($password, $rez[0]["A_Password"]) ? $retVal = 1 : $retVal = -1; // select successful
 
@@ -131,9 +124,11 @@ class ModelAdmin extends Model
             }
             //close connection
             $connInst->close($conn);
+            return $retVal;
+
         } else {
-            echo "no connection found";
+            return $retVal;
         }
-        return $retVal;
     }
+
 }

@@ -25,9 +25,16 @@ class DB_Connection
     function open()
     {
         $servername = "localhost";
+
+
         $username = "keksas_user";
         $password = "mangoAdmin";
         $database = "keksas_db";
+
+        /*
+        $username = "root";
+        $database = "rubishonline";
+        */
 
         $config = new Configuration();
         //..

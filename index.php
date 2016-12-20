@@ -7,13 +7,12 @@
  */
 
 use RubishOnline\Tests\AdminTest;
-use RubishOnline\Models\Admin;
+use RubishOnline\Models\DB_Admin;
 use RubishOnline\Tests\BinTest;
 use RubishOnline\Tests\QuestionTest;
 
 require_once 'app/start.php';
 
-//REF public files are from Bootswatch
 //include("app/RubishOnline/Views/Home/index.html");
 
 echo "
@@ -30,11 +29,11 @@ echo "
 </body>
 </html>
 ";
-echo "Login <br>";
-$conn = new Admin();
-$conn->verify();
-echo "<hr>";
-$conn->register();
+//echo "Login <br>";
+//$conn = new DB_Admin();
+//$conn->verify();
+//echo "<hr>";
+//$conn->register();
 //$test = new AdminTest();
 //$test->checkPassFail('user','pass');
 

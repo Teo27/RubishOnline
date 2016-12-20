@@ -8,7 +8,6 @@
 
 namespace RubishOnline\Core;
 
-
 class Controller
 {
     private $pathModel = '\\RubishOnline\Models\\';
@@ -17,7 +16,6 @@ class Controller
 
     public function __construct()
     {
-        // echo 1;
         $this->view = new View();
     }
 
@@ -29,10 +27,5 @@ class Controller
         return new $constr();
     }
 
-    public function checkForSpec($string)
-    {
-        //check if string contains at least one character
-        //echo preg_match('/^[a-zA-Z0-9!,.? ]*$/ ', $string)." ".$string;
-        return preg_match('/^[a-zA-Z0-9!,.? ]*$/ ', $string);
-    }
+
 }
