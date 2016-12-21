@@ -12,6 +12,10 @@ namespace RubishOnline\Controllers;
 use RubishOnline\Core\Controller;
 use RubishOnline\Core\Session;
 use RubishOnline\Models\DB_Admin;
+use RubishOnline\Models\DB_Approved;
+use RubishOnline\Models\DB_Bins;
+use RubishOnline\Models\DB_Pending;
+use RubishOnline\Models\DB_Results;
 
 class Admin extends Controller
 {
@@ -23,7 +27,7 @@ class Admin extends Controller
     }
 
     public function index(){
-        $this->view->render('Admin/index');
+        $this->view->render('Admin/index', true);
     }
 
     public function register(){
@@ -38,7 +42,6 @@ class Admin extends Controller
             echo $rez;
 
         }else{
-            echo 2;
             $this->view->register = -2;
         }
 
@@ -58,7 +61,7 @@ class Admin extends Controller
             if ($rez == 1) {
                 Session::start();
                 Session::set('loggedIn', true);
-                header('location: ../home');
+                header('location: ../admin/home');
                 exit;
             }
 
@@ -66,6 +69,24 @@ class Admin extends Controller
             $this->view->login = -2;
         }
 
-        $this->view->render('Admin/index');
+        $this->view->render('Admin/index', true);
+    }
+
+    public function home(){
+        $this->initAll();
+        $this->view->render('Admin/home', true);
+    }
+
+    private function initAll(){
+        $pending = new DB_Pending();
+        $approved = new DB_Approved();
+        $bins = new DB_Bins();
+        $results = new DB_Results();
+
+        $this->view->pending = $pending->getQuestions();
+        $this->view->approved = $approved->getQuestions();
+        $this->view->bins = $bins->getBins();
+        $this->view->results = $results->getQuestions();
+
     }
 }

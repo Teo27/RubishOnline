@@ -26,4 +26,34 @@ class Bin extends Controller
         $this->view->render('Bin/index');
     }
 
+    public function createBin(){
+        $bin = new DB_Bins();
+        echo $bin->createBin($_POST['Address']);
+    }
+
+    public function getQuestion($trashId){
+        $bin = new DB_Bins();
+        echo $bin->getQuestion($trashId);
+    }
+
+    public function voteLeft($id){
+        $bin = new DB_Bins();
+        echo $bin->voteLeft($id);
+    }
+
+    public function voteRight($id){
+        $bin = new DB_Bins();
+        echo $bin->voteRight($id);
+    }
+
+    public function promote($id){
+        $bin = new DB_Bins();
+        echo $bin->promoteBin($id);
+    }
+
+    public function deleteBin($id){
+        $bin = new DB_Bins();
+        echo $bin->deleteBin($id);
+    }
+
 }

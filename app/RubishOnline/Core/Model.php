@@ -22,13 +22,13 @@ class Model
 
     function value($value){
         if($value === -1){
-            echo 'There was an error getting data from DB';
-            return null;
+            //echo 'There was an error getting data from DB';
+            return -1;
         }
 
         if($value === 0){
-            echo 'Could not connect to DB';
-            return null;
+            //echo 'Could not connect to DB';
+            return 0;
         }
 
         return $value;

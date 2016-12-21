@@ -29,6 +29,8 @@ class Home extends Controller
         $this->view->render('home/index');
     }
 
+
+
     public function test($id){
 
         $res = new DB_Bins();

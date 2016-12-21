@@ -30,11 +30,11 @@ class DB_Connection
         $username = "keksas_user";
         $password = "mangoAdmin";
         $database = "keksas_db";
+/*
 
-        /*
         $username = "root";
         $database = "rubishonline";
-        */
+*/
 
         $config = new Configuration();
         //..

@@ -26,7 +26,6 @@ class DB_Admin extends Model
             return -2;
 
         }
-
         $value = $this->insertAdmin($username, $password);
 
         return $this->value($value);
@@ -37,7 +36,6 @@ class DB_Admin extends Model
         if (!$this->checkForSpec($username) && !$this->checkForSpec($password)) {
             return -2;
         }
-
         $value = $this->selectAdmin($username, $password);
 
         return $this->value($value);

@@ -35,7 +35,17 @@ class DB_Bins extends Model
             return -2;
         }
 
-        $value = $this->createBinDB($address);
+        $value = $this->createBinDB($address, true);
+
+        return $this->value($value);
+    }
+
+    public function getQuestion($trashId)
+    {
+        if (!$this->checkId($trashId)) {
+            return -2;
+        }
+        $value = $this->createBinDB(null,false,$trashId);
 
         return $this->value($value);
     }
@@ -77,6 +87,13 @@ class DB_Bins extends Model
             return -2;
         }
         $value = $this->deleteBinDB($id);
+
+        return $this->value($value);
+    }
+
+    public function getBins()
+    {
+        $value = $this->getBinsDB();
 
         return $this->value($value);
     }
@@ -148,7 +165,7 @@ class DB_Bins extends Model
         return array($lat, $lng);
     }
 
-    private function createBinDB($address){
+    private function createBinDB($address, $create = false, $binId = null){
         $retVal = 0;
         $connInst = new DB_Connection();
         $conn = $connInst->open();
@@ -160,7 +177,9 @@ class DB_Bins extends Model
                 $queryBuilder = $conn->createQueryBuilder();
                 $queryBuilder
                     ->select('Q_id, Question, A_Right, A_Left')
-                    ->from('Approved');
+                    ->from('Approved')
+                    ->orderBy('Votes','DESC')
+                    ->setMaxResults(1);;
 
                 $val = $queryBuilder->execute()->fetchAll();
 
@@ -178,11 +197,63 @@ class DB_Bins extends Model
                     $delValue = $this->removeQuestion($questionId);
                 }
 
-                $insValue = $this->insertBin($question,$right,$left,$address);
-
+                if($create){
+                    $insValue = $this->insertBin($question,$right,$left,$address);
+                }else{
+                    $insValue = $this->insertBinQuestion($question,$right,$left,$binId);
+                }
                 if($delValue != 1 || $insValue != 1){
                     return $retVal = -1;
                 }
+
+                $retVal = 1;
+                $conn->commit();
+
+            } catch (DBALException $e) {
+
+                $conn->rollBack();
+                echo $e->getMessage(), "\n";
+                return $retVal = -1;
+            }
+
+            $connInst->close($conn);
+
+            return $retVal;
+
+        } else {
+            return $retVal;
+        }
+    }
+
+    private function insertBinQuestion($question, $right, $left,$trashId)
+    {
+        $retVal = 0;
+        $connInst = new DB_Connection();
+        $conn = $connInst->open();
+
+        if (!is_null($conn)) {
+            $conn->beginTransaction();
+            try {
+                $queryBuilder = $conn->createQueryBuilder();
+                $queryBuilder
+                    ->update('Bins')
+                    ->set('Bins.Question', ':question')
+                    ->set('Bins.A_Right', ':right')
+                    ->set('Bins.A_Left', ':left')
+                    ->set('Bins.Published', ':date')
+                    ->set('Bins.Right_Result', ':rightRes')
+                    ->set('Bins.Left_Result', ':leftRes')
+                    ->where('Bins.Bin_Id = :id')
+                    ->setParameter('id',$trashId)
+                    ->setParameter('question', $question)
+                    ->setParameter('right', $right)
+                    ->setParameter('left', $left)
+                    ->setParameter('rightRes', 0)
+                    ->setParameter('leftRes', 0)
+                    ->setParameter('date', date("Y-m-d"));
+
+                $queryBuilder->execute();
+
                 $retVal = 1;
                 $conn->commit();
 
@@ -390,7 +461,8 @@ class DB_Bins extends Model
                 $published = $val[0]['Published'];
 
                 $insValue = $this->promoteAdd($question,$right,$left,$rightRes,$leftRes,$published);
-                if($insValue != 1){
+                $questionValue = $this->getQuestion($id);
+                if($insValue != 1 && $questionValue != 1){
                     return $retVal = -1;
                 }
                 $retVal = 1;
@@ -476,6 +548,40 @@ class DB_Bins extends Model
 
                 $queryBuilder->execute();
                 $retVal = 1;
+                $conn->commit();
+
+            } catch (DBALException $e) {
+
+                $conn->rollBack();
+                echo $e->getMessage(), "\n";
+                return $retVal = -1;
+            }
+
+            $connInst->close($conn);
+
+            return $retVal;
+
+        } else {
+            return $retVal;
+        }
+    }
+
+    private function getBinsDB(){
+        $retVal = 0;
+        $connInst = new DB_Connection();
+        $conn = $connInst->open();
+
+        if (!is_null($conn)) {
+            $conn->beginTransaction();
+            try {
+
+                $queryBuilder = $conn->createQueryBuilder();
+                $queryBuilder
+                    ->select('*')
+                    ->from('Bins');
+
+                $retVal = $queryBuilder->execute()->fetchAll();
+
                 $conn->commit();
 
             } catch (DBALException $e) {

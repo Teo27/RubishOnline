@@ -14,19 +14,25 @@ class View
 
     function __construct()
     {
-       // echo 'This is view';
+
     }
 
-    public function render($name, $noRequire = false){
+    public function render($name,$noToolbar = false, $noRequire = false){
 
         if($noRequire == true){
 
-             require __DIR__ . '/../Views/' . $name . '.php';
+            require __DIR__ . '/../Views/' . $name . '.php';
+
+        }else if($noToolbar == true) {
+
+            require __DIR__ . '/../Views/header.php';
+            require __DIR__ . '/../Views/' . $name . '.php';
+            require __DIR__ . '/../Views/footer.php';
 
         }else{
 
-
             require __DIR__ . '/../Views/header.php';
+            require __DIR__ . '/../Views/toolbar.php';
             require __DIR__ . '/../Views/' . $name . '.php';
             require __DIR__ . '/../Views/footer.php';
         }
