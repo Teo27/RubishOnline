@@ -1,10 +1,13 @@
 Options -MultiViews
 RewriteEngine On
 
-RewriteBase /public
-
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
 
-RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+<IfModule mod_speling.c>
+CheckSpelling on
+CheckCaseOnly on
+</IfModule>
+
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L,NC]

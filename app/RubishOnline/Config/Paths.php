@@ -16,7 +16,8 @@
  * <?php echo URL ?> - an this is how you can get it
  */
 
-define('URL', '/../public_html/');
+//NB! change the URL path to appropriate one
+define('URL', '/../rubishonline/public_html/');
 
 define('DB_TYPE' , '');
 define('DB_HOST' , 'localhost');

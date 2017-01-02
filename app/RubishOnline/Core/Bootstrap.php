@@ -15,7 +15,6 @@ use RubishOnline\Controllers\Error;
 class Bootstrap
 {
 
-
     protected $controller = '';
     protected $method = 'index';
     protected $params = array();
@@ -31,9 +30,9 @@ class Bootstrap
         }
 
         //Check if controller exists - if yes continue
-        if(file_exists(__DIR__ . '/../Controllers/' . $url[0] . '.php')){
+        if(file_exists(__DIR__ . '/../Controllers/' . ucfirst(strtolower($url[0])) . '.php')){
 
-            $this->controller = $url[0];
+            $this->controller = ucfirst(strtolower($url[0]));
 
             $constr = $this->path . $this->controller;
 
@@ -67,7 +66,6 @@ class Bootstrap
             }
 
         }else{
-
             new Error();
         }
 
@@ -77,6 +75,8 @@ class Bootstrap
     protected function parseUrl(){
         if(isset($_GET['url'])){
             return $url = explode('/',filter_var(rtrim($_GET['url'],'/'),FILTER_SANITIZE_URL));
+        }else{
+            return null;
         }
     }
 }

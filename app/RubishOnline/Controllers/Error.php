@@ -18,7 +18,7 @@ class Error extends Controller
         parent::__construct();
 
         $this->view->msg = 'This page does not exist';
-        $this->view->render('error/index', true);
+        $this->view->render('Error/index', true);
     }
 
     public function index(){
