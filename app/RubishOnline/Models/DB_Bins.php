@@ -50,22 +50,28 @@ class DB_Bins extends Model
         return $this->value($value);
     }
 
-    public function voteLeft($trashId)
+    public function voteLeft($trashId, $leftR)
     {
         if (!$this->checkId($trashId)) {
             return -2;
         }
-        $value = $this->voteLeftDB($trashId);
+        if (!$this->checkId($leftR)) {
+            return -2;
+        }
+        $value = $this->voteLeftDB($trashId, $leftR);
 
         return $this->value($value);
     }
 
-    public function voteRight($trashId)
+    public function voteRight($trashId, $rightR)
     {
         if (!$this->checkId($trashId)) {
             return -2;
         }
-        $value = $this->voteRightDB($trashId);
+        if (!$this->checkId($rightR)) {
+            return -2;
+        }
+        $value = $this->voteRightDB($trashId, $rightR);
 
         return $this->value($value);
     }
@@ -179,7 +185,7 @@ class DB_Bins extends Model
                     ->select('Q_id, Question, A_Right, A_Left')
                     ->from('Approved')
                     ->orderBy('Votes','DESC')
-                    ->setMaxResults(1);;
+                    ->setMaxResults(1);
 
                 $val = $queryBuilder->execute()->fetchAll();
 
@@ -359,7 +365,7 @@ class DB_Bins extends Model
         }
     }
 
-    private function voteLeftDB($trashId)
+    private function voteLeftDB($trashId, $leftRez)
     {
         $retVal = 0;
         $connInst = new DB_Connection();
@@ -372,9 +378,10 @@ class DB_Bins extends Model
                 $queryBuilder = $conn->createQueryBuilder();
                 $queryBuilder
                     ->update('Bins')
-                    ->set('Bins.Left_Result', 'Bins.Left_Result +1')
+                    ->set('Bins.Left_Result', '?1')
                     ->where('Bins.Bin_Id = :id')
-                    ->setParameter('id',$trashId);
+                    ->setParameter('id', $trashId)
+                    ->setParameter(1, $leftRez);
 
                 $queryBuilder->execute();
 
@@ -397,7 +404,7 @@ class DB_Bins extends Model
         }
     }
 
-    private function voteRightDB($trashId)
+    private function voteRightDB($trashId, $rightRez)
     {
         $retVal = 0;
         $connInst = new DB_Connection();
@@ -410,9 +417,10 @@ class DB_Bins extends Model
                 $queryBuilder = $conn->createQueryBuilder();
                 $queryBuilder
                     ->update('Bins')
-                    ->set('Bins.Right_Result', 'Bins.Right_Result +1')
+                    ->set('Bins.Right_Result', '?1')
                     ->where('Bins.Bin_Id = :id')
-                    ->setParameter('id',$trashId);
+                    ->setParameter('id', $trashId)
+                    ->setParameter(1, $rightRez);
 
                 $queryBuilder->execute();
 

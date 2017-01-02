@@ -8,15 +8,15 @@
 
 //TODO You can write here all the constants that would otherwise require you to write a path to somewhere
 /**
-    define('name of a constant' , 'value of the constant');
+ * define('name of a constant' , 'value of the constant');
+ *
+ * F.x.
+ * define('URL' , 'RubishOnline/public_html');
+ *
+ * <?php echo URL ?> - an this is how you can get it
+ */
 
-    F.x.
-    define('URL' , 'RubishOnline/public');
-
-    <?php echo URL ?> - an this is how you can get it
-  */
-
-define('URL' , '/../RubishOnline/public/');
+define('URL', '/../public_html/');
 
 define('DB_TYPE' , '');
 define('DB_HOST' , 'localhost');

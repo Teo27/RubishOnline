@@ -2,7 +2,7 @@
 
 namespace RubishOnline\Tests;
 
-use RubishOnline\Models\Question;
+use RubishOnline\Models\DB_Approved;
 
 /**
  * Created by PhpStorm.
@@ -16,7 +16,7 @@ class QuestionTest extends \PHPUnit_Framework_TestCase
     public function testQuestionInsert()
     {
 
-        $qst = new Question();
+        $qst = new DB_Approved();
 
     }
 }

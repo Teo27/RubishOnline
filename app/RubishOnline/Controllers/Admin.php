@@ -89,4 +89,25 @@ class Admin extends Controller
         $this->view->results = $results->getQuestions();
 
     }
+
+    public function createBin($id, $question, $left, $right, $rezL, $rezR)
+    {
+        $file = fopen("../Config/BinsFiles/$id.txt", "w") or die("Unable to open file!");
+        $txt = $question . "\n";
+        fwrite($file, $txt);
+
+        $txt = $left . "\n";
+        fwrite($file, $txt);
+
+        $txt = $right . "\n";
+        fwrite($file, $txt);
+
+        $txt = $rezL . "\n";
+        fwrite($file, $txt);
+
+        $txt = $rezR . "\n";
+        fwrite($file, $txt);
+
+        fclose($file);
+    }
 }
