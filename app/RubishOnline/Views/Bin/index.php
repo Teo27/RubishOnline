@@ -9,7 +9,14 @@
     if($this->results == null){
         echo 'No such trash bin exists';
     }
+function refresh( $time ){
+    $current_url = $_SERVER[ 'REQUEST_URI' ];
+    return header( "Refresh: " . $time . "; URL=$current_url" );
+}
 
+// call the function in the appropriate place
+refresh( 4 );
+// this refreshes page after 4 seconds
 ?>
 <style>
     table {
@@ -52,4 +59,48 @@
         </tr>
     </table>
 </div>
+<!--
+<script>
+    $(document).ready(function() {
+        setInterval(GetData, 1000);
+
+        function GetData() {
+
+            $.ajax({
+                type: "GET",
+                url: "<?php echo URL?>Bin/index",
+                dataType: "text",
+                cache: false,
+                success: function (data) {
+
+                    var title = $(xml).find("title").text();
+                    var singer = title.split(" - ")[0];
+                    var song = title.split(" - ")[1];
+
+                    var album = $(xml).find("album").text();
+                    var genre = $(xml).find("genre").text();
+                    var duration = $(xml).find("duration").text();
+                    var next = $(xml).find("next").text();
+
+
+                    if (localStorage.getItem("title") != title) {
+
+                        var xmldata = 'singer=' + singer + '&song=' + song + '&album=' + album + '&genre=' + genre + '&duration=' + duration;
+                        AddDB(title, xmldata);
+
+                    }
+                    $('#singer').html(singer);
+                    $('#song').html(song);
+                    $('#album').html(album);
+                    $('#genre').html(genre);
+                    $('#duration').html("/" + duration);
+
+                    Timer(duration, next);
+
+                }
+            });
+        }
+    }
+</script>
+-->
 

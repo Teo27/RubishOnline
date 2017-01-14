@@ -23,7 +23,7 @@ class Bin extends Controller
         $model = new DB_Bins();
         $this->view->results = $model->getResult($trashId);
 
-        $this->view->render('Bin/index');
+        $this->view->render('Bin/index',true);
     }
 
     public function createBin(){

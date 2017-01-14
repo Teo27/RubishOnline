@@ -46,12 +46,9 @@ class DB_Approved extends Model
         //open connection
         $connInst = new DB_Connection();
         $conn = $connInst->open();
-
-        //if connection successful then
         if (!is_null($conn)) {
             $conn->beginTransaction();
             try {
-                //create query
                 $queryBuilder = $conn->createQueryBuilder();
                 $queryBuilder
                     ->select('Q_Id, Question, A_Left, A_Right, Votes')
